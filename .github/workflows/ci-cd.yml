@@ -127,6 +127,12 @@ jobs:
           echo "TRIVY_IMAGE_REF=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
           echo "GITHUB_REPOSITORY=${{ github.repository }}"
 
+      - name: Build lowercase image ref
+        id: imgref
+        run: |
+          echo "image_ref=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]'):sha-${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "Using image_ref=${{ steps.imgref.outputs.image_ref }}"
+
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
